@@ -11,6 +11,8 @@ var countryCapitalMap = {};
 const APP_ID = "amzn1.ask.skill.89812b0e-4b91-409f-99b6-b0cae7081fac"; // APP_ID is your skill id which can be found in the Amazon developer console where you create the skill.
 //My ARN: arn:aws:lambda:us-east-1:283850061414:function:countrywisdom
 
+const RE_PROMPT_MSG = 'Anything Else?';
+
 exports.handler = function(event, context, callback) {
     init();
     const alexa = Alexa.handler(event, context, callback);
@@ -21,7 +23,7 @@ exports.handler = function(event, context, callback) {
 
 const handlers = {
     'LaunchRequest': function () {
-        this.emit(':ask','Hello Abirami, Shakthi and Nethra! Which Country Capital you would like to know?','Which Country Capital you would like to know?');
+        this.emit(':ask','Hello! Which Country Capital you would like to know?','Which Country Capital you would like to know?');
     },
     'GetCountryCapitalIntent' : function() {
         try {
@@ -33,11 +35,13 @@ const handlers = {
             if(capital) {
                 message = "Capital of "+ country + " is " + capital;
             }
-            this.emit(':ask',message,'Do you want to know capital of any other Country?');
+            console.log('Message is '+ message);
+            this.response.speak(message).listen(RE_PROMPT_MSG);
+            this.emit(':responseReady');
         } catch (e) {
+            console.error('Error occured during GetCountryCapitalIntent '+ e);
             this.emit(':ask','You can say, What is the capital of France, or, you can say capital of France, or, France Capital','What can I help you with?');
         }
-
     },
     'AMAZON.HelpIntent': function () {
         this.emit(':ask','You can say, What is the capital of France, or, you can say capital of France, or, France Capital','What can I help you with?');
