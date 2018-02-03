@@ -1,20 +1,20 @@
 /**
- * Created by bitzb on 1/30/2018.
+ * Created by Balasubramanian Krishnan on 1/30/2018.
  */
-
 const Alexa = require('alexa-sdk');
 
-const countriesData = require('./countries.json');
+const countriesData = require('./countryMap.json');
 
-var countryCapitalMap = {};
+// APP_ID is your skill id which can be found in the Amazon developer console where you create the skill.
+const APP_ID = "amzn1.ask.skill.89812b0e-4b91-409f-99b6-b0cae7081fac";
 
-const APP_ID = "amzn1.ask.skill.89812b0e-4b91-409f-99b6-b0cae7081fac"; // APP_ID is your skill id which can be found in the Amazon developer console where you create the skill.
-//My ARN: arn:aws:lambda:us-east-1:283850061414:function:countrywisdom
-
-const RE_PROMPT_MSG = 'Anything Else?';
+const WELCOME_MSG = 'Hello! Ask any country information like, capital, currency, region, languages spoken, or, neighbouring countries of any Country';
+const INITAL_RE_PROMPT_MSG = 'Which country information, you would like to know?';
+const RE_PROMPT_MSG = 'Need any other country information?';
+const GOODBYE_MSG = 'GoodBye, Thanks for using Country Wisdom!';
+const HELP_MSG = 'You can ask any country information like capital, currency, region, languages spoken and neighbouring countries of any country. For example, what is the currency of India?, or, what is the capital of USA?';
 
 exports.handler = function(event, context, callback) {
-    init();
     const alexa = Alexa.handler(event, context, callback);
     alexa.appId = APP_ID
     alexa.registerHandlers(handlers);
@@ -23,17 +23,18 @@ exports.handler = function(event, context, callback) {
 
 const handlers = {
     'LaunchRequest': function () {
-        this.emit(':ask','Hello! Which Country Capital you would like to know?','Which Country Capital you would like to know?');
+        this.emit(':ask', WELCOME_MSG, INITAL_RE_PROMPT_MSG);
     },
     'GetCountryCapitalIntent' : function() {
         try {
-            var country = this.event.request.intent.slots.Country.value;
+            var country = this.event.request.intent.slots.Country.value.toLowerCase();
+            var fullCountryName = getFullCountryName(country);
             console.log('Country is '+ country);
             var capital = getCapital(country);
             console.log('Capital is '+ capital);
             var message = "Sorry. Couldn't find any country with name "+ country;
             if(capital) {
-                message = "Capital of "+ country + " is " + capital;
+                message = "Capital of "+ fullCountryName + " is " + capital;
             }
             console.log('Message is '+ message);
             this.response.speak(message).listen(RE_PROMPT_MSG);
@@ -44,24 +45,34 @@ const handlers = {
         }
     },
     'AMAZON.HelpIntent': function () {
-        this.emit(':ask','You can say, What is the capital of France, or, you can say capital of France, or, France Capital','What can I help you with?');
+        this.emit(':ask',HELP_MSG, INITAL_RE_PROMPT_MSG);
+    },
+    'NotInterestedIntent' : function() {
+        this.emit(':tell',GOODBYE_MSG);
     },
     'AMAZON.CancelIntent': function () {
-        this.emit(':tell','GoodBye, Thanks for using Country Wisdom!');
+        this.emit(':tell',GOODBYE_MSG);
     },
     'AMAZON.StopIntent': function () {
-        this.emit(':tell','GoodBye, Thanks for using Country Wisdom!');
+        this.emit(':tell',GOODBYE_MSG);
+    },
+    "Unhandled": function() {
+        this.emit(':ask',HELP_MSG, INITAL_RE_PROMPT_MSG);
     }
 }
 
 function getCapital(countryName) {
-    return countryCapitalMap[countryName.toLowerCase()];
+    let capital = null;
+    if(countriesData[countryName]) {
+        capital = countriesData[countryName].capital;
+    }
+    return capital;
 }
 
-function init() {
-    countriesData.forEach(obj => {
-        let countryName = obj.name.toLowerCase();
-        let countryCapital = obj.capital;
-        countryCapitalMap[countryName] = countryCapital;
-    });
+function getFullCountryName(countryName) {
+    let fullCountryName = countryName;
+    if(countriesData[countryName]) {
+        fullCountryName = countriesData[countryName].fullCountryName;
+    }
+    return fullCountryName;
 }

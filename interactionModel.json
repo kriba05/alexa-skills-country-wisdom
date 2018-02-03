@@ -1,0 +1,90 @@
+{
+  "languageModel": {
+    "intents": [
+      {
+        "name": "AMAZON.CancelIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.HelpIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.StopIntent",
+        "samples": []
+      },
+      {
+        "name": "GetCountryCapitalIntent",
+        "samples": [
+          "Capital of {Country}",
+          "What is the Capital of {Country}",
+          "{Country} Capital",
+          "What is Capital of {Country}",
+          "what's capital of {Country}",
+          "which is Capital of {Country}",
+          "capital {Country}"
+        ],
+        "slots": [
+          {
+            "name": "Country",
+            "type": "AMAZON.Country"
+          }
+        ]
+      },
+      {
+        "name": "NotInterestedIntent",
+        "samples": [
+          "no",
+          "shut up",
+          "get lost",
+          "nope",
+          "nuh",
+          "nah",
+          "never",
+          "no more",
+          "not much",
+          "ney",
+          "shutup",
+          "sshh",
+          "ssh",
+          "ssshh",
+          "sssh",
+          "sush"
+        ],
+        "slots": []
+      }
+    ],
+    "invocationName": "country wisdom"
+  },
+  "prompts": [
+    {
+      "id": "Elicit.Intent-GetCountryCapitalIntent.IntentSlot-Country",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Please provide Country Name"
+        }
+      ]
+    }
+  ],
+  "dialog": {
+    "intents": [
+      {
+        "name": "GetCountryCapitalIntent",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "Country",
+            "type": "AMAZON.Country",
+            "elicitationRequired": true,
+            "confirmationRequired": false,
+            "prompts": {
+              "elicitation": "Elicit.Intent-GetCountryCapitalIntent.IntentSlot-Country"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
