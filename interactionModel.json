@@ -32,6 +32,31 @@
         ]
       },
       {
+        "name": "GetCurrency",
+        "samples": [
+          "what is currency of {Country}",
+          "what is the currency of {Country}",
+          "what's the currency of {Country}",
+          "currency of {Country}",
+          "{Country} currency",
+          "currency {Country}",
+          "which is the currency of {Country}",
+          "what currency for {Country}",
+          "what is the currency for {Country}",
+          "what is currency for {Country}",
+          "currency for {Country}",
+          "what currency {Country}",
+          "which currency {Country}",
+          "which is currency of {Country}"
+        ],
+        "slots": [
+          {
+            "name": "Country",
+            "type": "AMAZON.Country"
+          }
+        ]
+      },
+      {
         "name": "NotInterestedIntent",
         "samples": [
           "no",
@@ -65,6 +90,15 @@
           "value": "Please provide Country Name"
         }
       ]
+    },
+    {
+      "id": "Elicit.Intent-GetCurrency.IntentSlot-Country",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "What is the Country Name?"
+        }
+      ]
     }
   ],
   "dialog": {
@@ -81,6 +115,22 @@
             "confirmationRequired": false,
             "prompts": {
               "elicitation": "Elicit.Intent-GetCountryCapitalIntent.IntentSlot-Country"
+            }
+          }
+        ]
+      },
+      {
+        "name": "GetCurrency",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "Country",
+            "type": "AMAZON.Country",
+            "elicitationRequired": true,
+            "confirmationRequired": false,
+            "prompts": {
+              "elicitation": "Elicit.Intent-GetCurrency.IntentSlot-Country"
             }
           }
         ]

@@ -14,6 +14,14 @@ const RE_PROMPT_MSG = 'Need any other country information?';
 const GOODBYE_MSG = 'GoodBye, Thanks for using Country Wisdom!';
 const HELP_MSG = 'You can ask any country information like capital, currency, region, languages spoken and neighbouring countries of any country. For example, what is the currency of India?, or, what is the capital of USA?';
 
+const CAPITAL = 'CAPITAL';
+const CURRENCY = 'CURRENCY';
+const REGION = 'REGION';
+const LANGUAGES = 'LANGUAGES';
+const BORDERS = 'BORDERS';
+const CALLING_CODES = 'CALLING_CODES';
+const CountryProperty = {CAPITAL, CURRENCY, REGION, LANGUAGES, BORDERS, CALLING_CODES};
+
 exports.handler = function(event, context, callback) {
     const alexa = Alexa.handler(event, context, callback);
     alexa.appId = APP_ID
@@ -29,9 +37,7 @@ const handlers = {
         try {
             var country = this.event.request.intent.slots.Country.value.toLowerCase();
             var fullCountryName = getFullCountryName(country);
-            console.log('Country is '+ country);
-            var capital = getCapital(country);
-            console.log('Capital is '+ capital);
+            var capital = getCountryProperty(country, CountryProperty.CAPITAL);
             var message = "Sorry. Couldn't find any country with name "+ country;
             if(capital) {
                 message = "Capital of "+ fullCountryName + " is " + capital;
@@ -61,12 +67,45 @@ const handlers = {
     }
 }
 
-function getCapital(countryName) {
-    let capital = null;
-    if(countriesData[countryName]) {
-        capital = countriesData[countryName].capital;
+function getCountryProperty(countryName, propertyName) {
+    let countryProperty = null;
+    let countryData = countriesData[countryName];
+    if(countryData) {
+        switch(propertyName) {
+            case CountryProperty.CAPITAL:
+                countryProperty = countryData.capital;
+                break;
+            case CountryProperty.CURRENCY:
+                countryProperty = countryData.currencies;
+                break;
+            case CountryProperty.LANGUAGES:
+                countryProperty = countryData.languages;
+                break;
+            case CountryProperty.BORDERS:
+                countryProperty = countryData.borders;
+                break;
+            case CountryProperty.REGION:
+                countryProperty = countryData.region;
+                break;
+            case CountryProperty.CALLING_CODES:
+                countryProperty = countryData.callingCodes;
+                break;
+        }
     }
-    return capital;
+    return countryProperty;
+}
+
+function buildDefaultMessage(countryName, fullCountryName, countryProperty) {
+    let message = "";
+
+    return message;
+}
+
+function buildSuccessMessage(countryName, fullCountryName, countryProperty, countryPropertyValue) {
+    let message = "";
+
+    return message;
+
 }
 
 function getFullCountryName(countryName) {

@@ -1,5 +1,5 @@
 /**
- * Created by bitzb on 2/1/2018.
+ * Created by Balasubramanian Krishnan on 2/1/2018.
  */
 
 const countriesData = require('./countries.json');
@@ -31,9 +31,9 @@ countriesData.forEach(country => {
     let callingCodes = country.callingCodes;
     let region = country.region;
     let borders = country.borders;
-    let currencies = country.currencies;
-    currencies.forEach(curr => {
-       delete curr['symbol'];
+    let currencies = [];
+    country.currencies.forEach(curr => {
+        currencies.push(curr.name);
     });
 
     let languages = [];
