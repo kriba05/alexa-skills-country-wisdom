@@ -3,6 +3,8 @@
  */
 
 const countriesData = require('./countries.json');
+const countryCodeMap = require('./countryCodeMap.json');
+
 var fs = require('fs');
 
 const countryAttributes = {};
@@ -30,7 +32,11 @@ countriesData.forEach(country => {
     let capital = country.capital;
     let callingCodes = country.callingCodes;
     let region = country.region;
-    let borders = country.borders;
+    let borders = [];
+    country.borders.forEach(border => {
+        borders.push(countryCodeMap[border]);
+    });
+
     let currencies = [];
     country.currencies.forEach(curr => {
         currencies.push(curr.name);
@@ -50,6 +56,6 @@ fs.writeFile('countryMap.json', JSON.stringify(countryAttributes, null, 4), 'utf
     if(err) {
         console.error('Error creating country map file', err);
     } else {
-        console.log('File created successfully');
+        console.log('Country Map Created Successfully');
     }
 });

@@ -14,6 +14,52 @@
         "samples": []
       },
       {
+        "name": "GetCountryBordersIntent",
+        "samples": [
+          "whats the border of {Country}",
+          "what are the borders of {Country}",
+          "bordering countries of {Country}",
+          "border country for {Country}",
+          "border country of {Country}",
+          "neighbours of {Country}",
+          "neighbours of the {Country}",
+          "neighbouring nartons of {Country}",
+          "{Country} neighbours",
+          "neighbours {Country}",
+          "which country is near {Country}",
+          "which countries surroiund {Country}"
+        ],
+        "slots": [
+          {
+            "name": "Country",
+            "type": "AMAZON.Country"
+          }
+        ]
+      },
+      {
+        "name": "GetCountryCallingCodesIntent",
+        "samples": [
+          "Calling code for {Country}",
+          "Calling codes for {Country}",
+          "CallingCodes for {Country}",
+          "CallingCode for {Country}",
+          "CallingCode of {Country}",
+          "Calling Codes of {Country}",
+          "CallingCodes of {Country}",
+          "Calling Code of {Country}",
+          "{Country} Callingcodes",
+          "{Country} callingcode",
+          "callingcode {Country}",
+          "callingcodes {Country}"
+        ],
+        "slots": [
+          {
+            "name": "Country",
+            "type": "AMAZON.Country"
+          }
+        ]
+      },
+      {
         "name": "GetCountryCapitalIntent",
         "samples": [
           "Capital of {Country}",
@@ -32,7 +78,7 @@
         ]
       },
       {
-        "name": "GetCurrency",
+        "name": "GetCountryCurrencyIntent",
         "samples": [
           "what is currency of {Country}",
           "what is the currency of {Country}",
@@ -48,6 +94,59 @@
           "what currency {Country}",
           "which currency {Country}",
           "which is currency of {Country}"
+        ],
+        "slots": [
+          {
+            "name": "Country",
+            "type": "AMAZON.Country"
+          }
+        ]
+      },
+      {
+        "name": "GetCountryLanguagesIntent",
+        "samples": [
+          "languages in {Country}",
+          "{Country} languages",
+          "what languages in {Country}",
+          "which language is spoken {Country}",
+          "what languages are spoken in {Country}",
+          "languages {Country}",
+          "what language is spoken in {Country}",
+          "what all languages are spoken in {Country}",
+          "languages of {Country}",
+          "languages for {Country}",
+          "language for {Country}",
+          "language of {Country}",
+          "language {Country}",
+          "{Country} language",
+          "{Country} languages are",
+          "languages spoken in {Country}",
+          "language spoken in {Country}",
+          "languages spoken for {Country}",
+          "language spoken for {Country}"
+        ],
+        "slots": [
+          {
+            "name": "Country",
+            "type": "AMAZON.Country"
+          }
+        ]
+      },
+      {
+        "name": "GetCountryRegionIntent",
+        "samples": [
+          "What is the region of {Country}",
+          "which region is {Country}",
+          "Region for {Country}",
+          "{Country} region",
+          "Region {Country}",
+          "what's the region for {Country}",
+          "{Country} which region",
+          "where is {Country}",
+          "where's {Country}",
+          "where is {Country} located",
+          "where is the {Country}",
+          "where is the {Country} located"
         ],
         "slots": [
           {
@@ -83,6 +182,24 @@
   },
   "prompts": [
     {
+      "id": "Elicit.Intent-GetCountryBordersIntent.IntentSlot-Country",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Please provide Country"
+        }
+      ]
+    },
+    {
+      "id": "Elicit.Intent-GetCountryCallingCodesIntent.IntentSlot-Country",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Please provide country"
+        }
+      ]
+    },
+    {
       "id": "Elicit.Intent-GetCountryCapitalIntent.IntentSlot-Country",
       "variations": [
         {
@@ -92,17 +209,67 @@
       ]
     },
     {
-      "id": "Elicit.Intent-GetCurrency.IntentSlot-Country",
+      "id": "Elicit.Intent-GetCountryCurrencyIntent.IntentSlot-Country",
       "variations": [
         {
           "type": "PlainText",
           "value": "What is the Country Name?"
         }
       ]
+    },
+    {
+      "id": "Elicit.Intent-GetCountryLanguagesIntent.IntentSlot-Country",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Please provide Country"
+        }
+      ]
+    },
+    {
+      "id": "Elicit.Intent-GetCountryRegionIntent.IntentSlot-Country",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Please provide Country"
+        }
+      ]
     }
   ],
   "dialog": {
     "intents": [
+      {
+        "name": "GetCountryBordersIntent",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "Country",
+            "type": "AMAZON.Country",
+            "elicitationRequired": true,
+            "confirmationRequired": false,
+            "prompts": {
+              "elicitation": "Elicit.Intent-GetCountryBordersIntent.IntentSlot-Country"
+            }
+          }
+        ]
+      },
+      {
+        "name": "GetCountryCallingCodesIntent",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "Country",
+            "type": "AMAZON.Country",
+            "elicitationRequired": true,
+            "confirmationRequired": false,
+            "prompts": {
+              "elicitation": "Elicit.Intent-GetCountryCallingCodesIntent.IntentSlot-Country"
+            }
+          }
+        ]
+      },
       {
         "name": "GetCountryCapitalIntent",
         "confirmationRequired": false,
@@ -120,7 +287,7 @@
         ]
       },
       {
-        "name": "GetCurrency",
+        "name": "GetCountryCurrencyIntent",
         "confirmationRequired": false,
         "prompts": {},
         "slots": [
@@ -130,7 +297,39 @@
             "elicitationRequired": true,
             "confirmationRequired": false,
             "prompts": {
-              "elicitation": "Elicit.Intent-GetCurrency.IntentSlot-Country"
+              "elicitation": "Elicit.Intent-GetCountryCurrencyIntent.IntentSlot-Country"
+            }
+          }
+        ]
+      },
+      {
+        "name": "GetCountryLanguagesIntent",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "Country",
+            "type": "AMAZON.Country",
+            "elicitationRequired": true,
+            "confirmationRequired": false,
+            "prompts": {
+              "elicitation": "Elicit.Intent-GetCountryLanguagesIntent.IntentSlot-Country"
+            }
+          }
+        ]
+      },
+      {
+        "name": "GetCountryRegionIntent",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "Country",
+            "type": "AMAZON.Country",
+            "elicitationRequired": true,
+            "confirmationRequired": false,
+            "prompts": {
+              "elicitation": "Elicit.Intent-GetCountryRegionIntent.IntentSlot-Country"
             }
           }
         ]
