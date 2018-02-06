@@ -8,7 +8,7 @@ const countryCodeMap = require('./countryCodeMap.json');
 var fs = require('fs');
 
 const countryAttributes = {};
-let alpha = /^[a-zA-Z]+$/i;
+let alpha = /^[a-zA-Z\s]+$/i;
 countriesData.forEach(country => {
     let altCountryNames = [];
     let countryName = country.name;
@@ -28,6 +28,9 @@ countriesData.forEach(country => {
             }
         });
     }
+
+    let demonym = country.demonym;
+    altCountryNames.push(demonym);
 
     let capital = country.capital;
     let callingCodes = country.callingCodes;
