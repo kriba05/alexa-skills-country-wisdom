@@ -27,7 +27,16 @@
           "{Country} neighbours",
           "neighbours {Country}",
           "which country is near {Country}",
-          "which countries surroiund {Country}"
+          "which countries surroiund {Country}",
+          "neighbour of {Country}",
+          "neighbour {Country}",
+          "neighbouring countries of {Country}",
+          "neighbouring countries for {Country}",
+          "{Country} neighbour",
+          "{Country} border",
+          "border {Country}",
+          "neighbours for {Country}",
+          "borders for {Country}"
         ],
         "slots": [
           {

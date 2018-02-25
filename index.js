@@ -8,21 +8,23 @@ const countriesData = require('./countryMap.json');
 const APP_ID = "amzn1.ask.skill.89812b0e-4b91-409f-99b6-b0cae7081fac";
 
 //Skill Messages Constants
-const WELCOME_MSG = 'Hello! Ask any country information like, capital, currency, region, languages spoken, or, neighbouring countries of any Country';
+const SKILL_NAME = 'Country Wisdom';
+const WELCOME_MSG = 'Hello! Ask any country information like, capital, currency, region, languages, calling codes, or, neighbours of any Country';
 const INITAL_RE_PROMPT_MSG = 'Which country information, you would like to know?';
-const RE_PROMPT_MSG = 'Need any other country information?';
+const RE_PROMPT_MSG = 'Need any country information?';
 const GOODBYE_MSG = 'GoodBye, Thanks for using Country Wisdom!';
-const HELP_MSG = 'You can ask any country information like capital, currency, region, languages spoken and neighbouring countries of any country. For example, what is the currency of India?, or, what is the capital of USA?';
+const HELP_MSG = 'You can ask any country information like, capital, currency, region, languages, calling codes, or, neighbours of any Country. For example, what is the currency of France?, or, what is the capital of USA?';
 const GENERIC_ERR_MSG = 'Sorry. I could not fulfill your request.'+ HELP_MSG;
 
-//Country enums
-const CAPITAL = 'CAPITAL';
-const CURRENCY = 'CURRENCY';
-const REGION = 'REGION';
-const LANGUAGES = 'LANGUAGES';
-const BORDERS = 'BORDERS';
-const CALLING_CODES = 'CALLING_CODES';
-const CountryProperty = {CAPITAL, CURRENCY, REGION, LANGUAGES, BORDERS, CALLING_CODES};
+
+//Country Property enums
+const CAPITAL = 'Capital';
+const CURRENCY = 'Currency';
+const REGION = 'Region';
+const LANGUAGES = 'Languages';
+const NEIGHBOURS = 'Neighbours';
+const CALLING_CODES = 'Calling Codes';
+const CountryProperty = {CAPITAL, CURRENCY, REGION, LANGUAGES, NEIGHBOURS, CALLING_CODES};
 
 exports.handler = function(event, context, callback) {
     const alexa = Alexa.handler(event, context, callback);
@@ -33,122 +35,108 @@ exports.handler = function(event, context, callback) {
 
 const handlers = {
     'LaunchRequest': function () {
-        this.emit(':ask', WELCOME_MSG, INITAL_RE_PROMPT_MSG);
+        this.emit(':askWithCard', WELCOME_MSG, INITAL_RE_PROMPT_MSG, SKILL_NAME, WELCOME_MSG, null);
     },
     'GetCountryCapitalIntent' : function() {
         try {
             let message = getResponse(this.event, CountryProperty.CAPITAL);
             this.response.speak(message).listen(RE_PROMPT_MSG);
+            this.response.cardRenderer(CountryProperty.CAPITAL, message, null);
             this.emit(':responseReady');
         } catch (e) {
             console.error('Error occurred', e);
-            this.emit(':ask',GENERIC_ERR_MSG,INITAL_RE_PROMPT_MSG);
+            this.emit(':askWithCard',GENERIC_ERR_MSG,INITAL_RE_PROMPT_MSG, SKILL_NAME, WELCOME_MSG, null);
         }
     },
     'GetCountryCurrencyIntent' : function() {
         try {
             let message = getResponse(this.event, CountryProperty.CURRENCY);
             this.response.speak(message).listen(RE_PROMPT_MSG);
+            this.response.cardRenderer(CountryProperty.CURRENCY, message, null);
             this.emit(':responseReady');
         } catch (e) {
             console.error('Error occurred', e);
-            this.emit(':ask',GENERIC_ERR_MSG,INITAL_RE_PROMPT_MSG);
+            this.emit(':askWithCard',GENERIC_ERR_MSG,INITAL_RE_PROMPT_MSG, SKILL_NAME, WELCOME_MSG, null);
         }
     },
     'GetCountryRegionIntent' : function() {
         try {
             let message = getResponse(this.event, CountryProperty.REGION);
             this.response.speak(message).listen(RE_PROMPT_MSG);
+            this.response.cardRenderer(CountryProperty.REGION, message, null);
             this.emit(':responseReady');
         } catch (e) {
             console.error('Error occurred', e);
-            this.emit(':ask',GENERIC_ERR_MSG,INITAL_RE_PROMPT_MSG);
+            this.emit(':askWithCard',GENERIC_ERR_MSG,INITAL_RE_PROMPT_MSG, SKILL_NAME, WELCOME_MSG, null);
         }
     },
     'GetCountryLanguagesIntent' : function() {
         try {
             let message = getResponse(this.event, CountryProperty.LANGUAGES);
             this.response.speak(message).listen(RE_PROMPT_MSG);
+            this.response.cardRenderer(CountryProperty.LANGUAGES, message, null);
             this.emit(':responseReady');
         } catch (e) {
             console.error('Error occurred', e);
-            this.emit(':ask',GENERIC_ERR_MSG,INITAL_RE_PROMPT_MSG);
+            this.emit(':askWithCard',GENERIC_ERR_MSG,INITAL_RE_PROMPT_MSG, SKILL_NAME, WELCOME_MSG, null);
         }
     },
     'GetCountryBordersIntent' : function() {
         try {
-            let message = getResponse(this.event, CountryProperty.BORDERS);
+            let message = getResponse(this.event, CountryProperty.NEIGHBOURS);
             this.response.speak(message).listen(RE_PROMPT_MSG);
+            this.response.cardRenderer(CountryProperty.NEIGHBOURS, message, null);
             this.emit(':responseReady');
         } catch (e) {
             console.error('Error occurred', e);
-            this.emit(':ask',GENERIC_ERR_MSG,INITAL_RE_PROMPT_MSG);
+            this.emit(':askWithCard',GENERIC_ERR_MSG,INITAL_RE_PROMPT_MSG, SKILL_NAME, WELCOME_MSG, null);
         }
     },
     'GetCountryCallingCodesIntent' : function() {
         try {
             let message = getResponse(this.event, CountryProperty.CALLING_CODES);
             this.response.speak(message).listen(RE_PROMPT_MSG);
+            this.response.cardRenderer(CountryProperty.CALLING_CODES, message, null);
             this.emit(':responseReady');
         } catch (e) {
             console.error('Error occurred', e);
-            this.emit(':ask',GENERIC_ERR_MSG,INITAL_RE_PROMPT_MSG);
+            this.emit(':askWithCard',GENERIC_ERR_MSG,INITAL_RE_PROMPT_MSG, SKILL_NAME, WELCOME_MSG, null);
         }
     },
     'NotInterestedIntent' : function() {
-        this.emit(':tell',GOODBYE_MSG);
+        this.emit(':tellWithCard',GOODBYE_MSG, SKILL_NAME, GOODBYE_MSG, null);
     },
     'AMAZON.HelpIntent': function () {
-        this.emit(':ask',HELP_MSG, INITAL_RE_PROMPT_MSG);
+        this.emit(':askWithCard',HELP_MSG, INITAL_RE_PROMPT_MSG, SKILL_NAME, HELP_MSG, null);
     },
     'AMAZON.CancelIntent': function () {
-        this.emit(':tell',GOODBYE_MSG);
+        this.emit(':tellWithCard',GOODBYE_MSG, SKILL_NAME, GOODBYE_MSG, null);
     },
     'AMAZON.StopIntent': function () {
-        this.emit(':tell',GOODBYE_MSG);
+        this.emit(':tellWithCard',GOODBYE_MSG, SKILL_NAME, GOODBYE_MSG, null);
     },
     "Unhandled": function() {
-        this.emit(':ask',HELP_MSG, INITAL_RE_PROMPT_MSG);
+        this.emit(':askWithCard',HELP_MSG, INITAL_RE_PROMPT_MSG, SKILL_NAME, HELP_MSG, null);
     }
 }
 
 function getResponse(event, countryProperty) {
     var country = event.request.intent.slots.Country.value.toLowerCase();
-    console.log(`country: ${country}`);
+    console.log(`Attribute ${countryProperty} requested for country: ${country}`);
     var fullCountryName = getFullCountryName(country);
     console.log(`fullCountryName: ${fullCountryName}`);
     var countryPropertyValue = getCountryProperty(country, countryProperty);
-    console.log(`countryProperty: ${countryProperty}`);
-    console.log(`countryPropertyValue: ${countryPropertyValue}`);
-    var message = buildDefaultMessage(fullCountryName, countryProperty);
+    console.log(`${countryProperty} of ${fullCountryName} is ${countryPropertyValue}`);
+    var message = null;
     if(countryPropertyValue) {
         message = buildSuccessMessage(fullCountryName, countryProperty, countryPropertyValue);
+    } else {
+        message = buildDefaultMessage(country);
     }
     console.log('Intent is '+ JSON.stringify(event.request.intent, null, 4));
     console.log('Message is '+ message);
     return message;
 }
-
-
-/*
-function sendResponse(event, countryProperty) {
-    try {
-        var country = event.request.intent.slots.Country.value.toLowerCase();
-        var fullCountryName = getFullCountryName(country);
-        var countryPropertyValue = getCountryProperty(country, countryProperty);
-        var message = buildDefaultMessage(fullCountryName, countryProperty);
-        if(countryPropertyValue) {
-            message = buildSuccessMessage(fullCountryName, countryProperty, countryPropertyValue);
-        }
-        console.log('Intent is '+ JSON.stringify(event.request.intent, null, 4));
-        console.log('Message is '+ message);
-        return message;
-    } catch (e) {
-        console.error('Error occurred', e);
-        obj.emit(':ask','Sorry. I could not fulfill your request.'+ HELP_MSG,'What can I help you with?');
-    }
-}
-*/
 
 function getFullCountryName(countryName) {
     let fullCountryName = countryName;
@@ -172,7 +160,7 @@ function getCountryProperty(countryName, propertyName) {
             case CountryProperty.LANGUAGES:
                 countryProperty = countryData.languages;
                 break;
-            case CountryProperty.BORDERS:
+            case CountryProperty.NEIGHBOURS:
                 countryProperty = countryData.borders;
                 break;
             case CountryProperty.REGION:
@@ -186,8 +174,8 @@ function getCountryProperty(countryName, propertyName) {
     return countryProperty;
 }
 
-function buildDefaultMessage(fullCountryName, countryProperty) {
-    let message = "Sorry, could not find "+ countryProperty + " for " + fullCountryName;
+function buildDefaultMessage(country) {
+    let message = `Sorry, ${country} is not recognized as a valid Country. Please try again.`;
     return message;
 }
 
@@ -201,7 +189,7 @@ function buildSuccessMessage(fullCountryName, countryProperty, countryPropertyVa
         } else {
             message =  "Languages spoken in " + fullCountryName + " is " + countryPropertyValue.toString();
         }
-    } else if (countryProperty === CountryProperty.BORDERS) {
+    } else if (countryProperty === CountryProperty.NEIGHBOURS) {
         if(Array.isArray(countryPropertyValue) && countryPropertyValue.length > 1) {
             message =  "Neighbouring countries of " + fullCountryName + " are " + countryPropertyValue.toString();
         } else if(Array.isArray(countryPropertyValue) && countryPropertyValue.length === 1){
